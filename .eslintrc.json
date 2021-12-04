@@ -1,0 +1,19 @@
+{
+  "env": {
+      "browser": true,
+      "es2021": true
+  },
+  "extends": [
+      "react-app",
+      "prettier"
+  ],
+  "parserOptions": {
+      "ecmaVersion": 11
+  },
+  "plugins": [
+      "react"
+  ],
+  "rules": {
+      "no-unused-vars":"warn"
+  }
+}
