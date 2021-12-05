@@ -1,7 +1,9 @@
+import { localStorageKey } from 'app/utils/constants/constants'
 import React, { useState } from 'react'
 import login from '../../assets/images/login.png'
 
 export default function LoginScreen(props) {
+  const { auth } = props
   const [formInput, setFormInput] = useState({
     email: '',
     password: '',
@@ -17,6 +19,10 @@ export default function LoginScreen(props) {
 
   const handleSubmit = event => {
     event.preventDefault()
+  }
+
+  const onHandleSignIn = event => {
+    localStorage.setItem(localStorageKey.USER, JSON.stringify(formInput))
   }
 
   return (
@@ -75,6 +81,7 @@ export default function LoginScreen(props) {
               </div>
               <div>
                 <button
+                  onClick={onHandleSignIn}
                   type='submit'
                   className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
                 >
@@ -88,7 +95,7 @@ export default function LoginScreen(props) {
                 <div className='relative flex justify-center text-sm'></div>
               </div>
               <div className='flex items-center justify-center'>
-                <div className='text-sm' onClick={props.auth.handleShowSignup}>
+                <div className='text-sm' onClick={auth.handleShowSignup}>
                   <span className='font-medium text-blue-600 hover:text-blue-500 cursor-pointer'>
                     Don't have an account yet?
                   </span>
