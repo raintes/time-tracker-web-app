@@ -16,7 +16,7 @@ export default function PageNotFoundScreen() {
             />
             <div className='flex-col flex justify-center items-center'>
               <span className='font-extrabold text-6xl'>Page not found</span>
-              <span className='font-normal text-xl mt-3 text-gray-500'>
+              <span className='font-normal text-lg mt-5 text-gray-500'>
                 Please check the URL in the address bar and try again.
               </span>
 
