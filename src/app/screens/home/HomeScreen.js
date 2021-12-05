@@ -1,55 +1,21 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { NavBarComponent, SideBarComponent } from 'app/components'
+import { format } from 'date-fns'
 
 import {
   NavBarAuthView,
   NotLoggedInView,
-  TimeEmptyStateView,
+  EntryEmptyStateView,
   TimerView,
-  TimeWeeklyView,
+  EntryWeeklyView,
 } from 'app/views'
 
-import { NAVIGATION } from 'app/utils/enums/enums'
+import { navigation } from 'app/utils/constants/constants'
 import { Login, Signup } from '..'
+import { getWeekOfYear } from 'app/utils/helpers/dates'
+import { weekEntries } from 'app/mock-data/entry.list'
 
-const navigation = [
-  { name: 'TIME TRACKER', icon: null, href: NAVIGATION.HOME, selected: true },
-  { name: 'REPORTS', icon: null, href: '', selected: false },
-]
-
-const useTimer = (initialState = 0) => {
-  const [timer, setTimer] = useState(initialState)
-  const [isActive, setIsActive] = useState(false)
-  const countRef = useRef(null)
-
-  const handleStart = () => {
-    setIsActive(true)
-    countRef.current = setInterval(() => {
-      setTimer(timer => timer + 1)
-    }, 1000)
-  }
-
-  const handleResume = () => {
-    countRef.current = setInterval(() => {
-      setTimer(timer => timer + 1)
-    }, 1000)
-  }
-
-  const handleReset = () => {
-    clearInterval(countRef.current)
-    setIsActive(false)
-    setTimer(0)
-  }
-
-  return {
-    timer,
-    isActive,
-    handleStart,
-    handleResume,
-    handleReset,
-  }
-}
-
+// Handle Login and Signup screens to display as modal-like view
 const useAuthModals = () => {
   const [showLogin, setShowLogin] = useState(false)
   const [showSignup, setShowSignup] = useState(false)
@@ -82,36 +48,50 @@ const useAuthModals = () => {
   }
 }
 
-const useAuth = (initialState = false) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(initialState)
-
-  return {
-    isLoggedIn,
-    setIsLoggedIn,
-  }
-}
-
-const useTimeTrack = () => {
-  const [timeTracks, setTimeTracks] = useState([])
-
-  return {
-    timeTracks,
-    setTimeTracks,
-  }
-}
-
 export default function HomeScreen() {
-  const timer = useTimer(0)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [weeks, setWeeks] = useState(weekEntries) // add 'weekEntries' as initial state to use mock data
   const auth = useAuthModals()
-  const authenticated = !useAuth()
-  const tracks = useTimeTrack()
+
+  // Group time entries by week of the year
+  const addWeekGroup = timeEntry => {
+    const weekNumber = getWeekOfYear(new Date(timeEntry.modifiedOn))
+    const dateString = format(new Date(timeEntry.modifiedOn), 'MMMM dd yyyy')
+
+    // Checks if `weekNumber` is existing on the object along with
+    // the `dateString` that is used as a key for the list of entries
+    // The expected output of `weeks` is an array of
+    // `n: { 'yyyy-mm-dd' : [array of entries]} `
+    // where n is the week number of the year.
+    if (weeks[weekNumber] && weeks[weekNumber][dateString]) {
+      setWeeks({
+        ...weeks,
+        [weekNumber]: {
+          ...weeks[weekNumber],
+          [dateString]: [...weeks[weekNumber][dateString], timeEntry],
+        },
+      })
+    } else {
+      setWeeks({
+        ...weeks,
+        [weekNumber]: {
+          [dateString]: [timeEntry],
+        },
+      })
+    }
+  }
+
+  const addTimeEntry = object => {
+    addWeekGroup(object)
+  }
 
   return (
     <>
       {auth.showLogin && <Login auth={auth} />}
       {auth.showSignup && <Signup auth={auth} />}
-      <div className='flex flex-row'>
-        <div className='sidebar flex'>
+
+      <div className='flex flex-row overflow-hidden'>
+        <div className='sidebar flex overflow-hidden'>
           <SideBarComponent {...{ navigation }} />
         </div>
         <div className='home-container h-screen bg-gray-50 min-w-0'>
@@ -119,23 +99,36 @@ export default function HomeScreen() {
             <NavBarComponent
               justifyEnd={true}
               element={
-                authenticated ? (
+                isLoggedIn ? (
                   <NavBarAuthView modal={auth} />
                 ) : (
-                  <TimerView timer={timer} />
+                  <TimerView addTimeEntry={addTimeEntry} />
                 )
               }
-              timer={timer}
             />
           </div>
-          {authenticated ? (
+          {isLoggedIn ? (
             <div className='content'>
               <NotLoggedInView />
             </div>
-          ) : tracks.timeTracks.length ? (
-            <TimeWeeklyView />
+          ) : Object.values(weeks).length ? (
+            <>
+              <div className='overflow-y-scroll h-screen'>
+                {Object.values(weeks).map(keyData => {
+                  return (
+                    <>
+                      <EntryWeeklyView data={keyData} />
+                      {/* Hackish way to add +5rem on h-screen's 100vh to show bottom items*/}
+                    </>
+                  )
+                })}
+                <div className='h-20'></div>
+              </div>
+            </>
           ) : (
-            <TimeEmptyStateView />
+            <>
+              <EntryEmptyStateView />
+            </>
           )}
         </div>
       </div>
