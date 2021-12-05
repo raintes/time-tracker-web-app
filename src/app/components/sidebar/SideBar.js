@@ -10,7 +10,7 @@ function setClassNames(...classes) {
 
 export default function SideBar(props) {
   return (
-    <div className='fixed z-20  top-0 flex flex-col flex-grow border-r border-gray-200 pt-5 pb-4 bg-gray-800 overflow-y-auto w-48 max-h-full h-screen'>
+    <div className='fixed top-0 flex flex-col flex-grow border-r border-gray-200 pt-5 pb-4 bg-gray-800 overflow-y-auto w-48 max-h-full h-screen'>
       <div className='flex items-center flex-shrink-0 px-4 space-y-5'>
         <span className='text-white font-bold'>Time Tracker App</span>
       </div>
