@@ -1,5 +1,5 @@
 export const NAVIGATION = {
-  HOME: '/',
+  HOME: '/tracker',
   SIGNUP: '/signup',
   LOGIN: '/login',
 }
