@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import signup from '../../assets/images/signup.png'
 
 export default function SignupScreen(props) {
+  const { auth } = props
   const [formInput, setFormInput] = useState({
     email: '',
     password: '',
@@ -107,7 +108,7 @@ export default function SignupScreen(props) {
                 <div className='relative flex justify-center text-sm'></div>
               </div>
               <div className='flex items-center justify-center'>
-                <div className='text-sm' onClick={props.auth.handleShowLogin}>
+                <div className='text-sm' onClick={auth.handleShowLogin}>
                   <span className='font-medium text-blue-600 hover:text-blue-500 cursor-pointer'>
                     Already have an account?
                   </span>
