@@ -1,49 +1,76 @@
-import { TimerComponent } from 'app/components'
-import React from 'react'
+import { projects } from 'app/mock-data/projects.list'
+import React, { useState } from 'react'
 
 export default function TimerView(props) {
+  const [formInput, setFormInput] = useState({
+    description: null,
+    project: null,
+    hours: null,
+    modifiedOn: new Date(),
+  })
+
+  const handleChange = event => {
+    const value = event.target.value
+    setFormInput({
+      ...formInput,
+      [event.target.name]: value,
+    })
+  }
+
+  const onAddTime = event => {
+    if (formInput.description && formInput.hours) {
+      props.addTimeEntry(formInput)
+    }
+  }
+
+  const renderProjectOptions = () => {
+    return projects.map(project => {
+      return <option value={project.label}>{project.label}</option>
+    })
+  }
+
   return (
     <>
       <div className='w-screen flex items-center'>
         <div className='w-full flex items-center h-20'>
           <input
+            required={true}
             type='text'
             name='description'
             id='description'
+            value={formInput.description || ''}
             className='focus:shadow-sm focus:ring-gray-500 focus:border-gray-500 block w-full sm:text-base border-0 rounded-md'
             placeholder='What are you working on?'
+            onChange={handleChange}
           />
           <div className='mx-10'>
-            <span className='font-semibold hover:underline cursor-pointer text-blue-600'>
-              Project
-            </span>
+            <select
+              name='project'
+              onChange={handleChange}
+              className='font-semibold hover:underline cursor-pointer '
+            >
+              {renderProjectOptions()}
+            </select>
           </div>
           <div className='flex flex-row items-center justify-center'>
-            <div>
-              <TimerComponent time={props.timer.timer} />
-            </div>
+            <input
+              type='text'
+              name='hours'
+              value={formInput.hours || ''}
+              className='focus:shadow-sm focus:ring-gray-500 focus:border-gray-500 font-semibold w-24 block sm:text-lg border-0 rounded-md'
+              placeholder='00:00:00'
+              onChange={handleChange}
+            />
             <div className='ml-10'>
-              {!props.timer.isActive ? (
-                <button
-                  onClick={props.timer.handleStart}
-                  type='button'
-                  className={
-                    'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none'
-                  }
-                >
-                  <span>START</span>
-                </button>
-              ) : (
-                <button
-                  onClick={props.timer.handleReset}
-                  type='button'
-                  className={
-                    'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none'
-                  }
-                >
-                  <span>STOP</span>
-                </button>
-              )}
+              <button
+                onClick={onAddTime}
+                type='button'
+                className={
+                  'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none'
+                }
+              >
+                <span>ADD</span>
+              </button>
             </div>
           </div>
         </div>
