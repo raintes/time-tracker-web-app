@@ -1,12 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react'
+import signup from '../../assets/images/signup.png'
 
-export default function SignupScreen() {
+export default function SignupScreen(props) {
+  const [formInput, setFormInput] = useState({
+    email: '',
+    password: '',
+    passwordConfirmation: '',
+  })
+
+  const handleChange = event => {
+    const value = event.target.value
+    setFormInput({
+      ...formInput,
+      [event.target.name]: value,
+    })
+  }
+
+  const handleSubmit = event => {
+    event.preventDefault()
+  }
+
   return (
     <>
       <div className='fixed z-10 inset-0 overflow-y-auto min-h-screen bg-gray-600 bg-opacity-75 flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
         <div className='items-center justify-center mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
           <div className='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>
-            <form className='space-y-6' action='#' method='POST'>
+            <img
+              className='object-cover md:object-scale-down max-h-48 w-full mb-16'
+              alt={signup}
+              src={signup}
+            />
+            <form onSubmit={handleSubmit} className='space-y-6'>
               <div>
                 <label
                   htmlFor='email'
@@ -22,6 +46,7 @@ export default function SignupScreen() {
                     type='email'
                     autoComplete='email'
                     required
+                    onChange={handleChange}
                     className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
                   />
                 </div>
@@ -42,6 +67,7 @@ export default function SignupScreen() {
                     type='password'
                     autoComplete='current-password'
                     required
+                    onChange={handleChange}
                     className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
                   />
                 </div>
@@ -56,11 +82,12 @@ export default function SignupScreen() {
                 <div className='mt-1'>
                   <input
                     placeholder='Password confirmation'
-                    id='password'
-                    name='password'
+                    id='passwordConfirmation'
+                    name='passwordConfirmation'
                     type='password'
                     autoComplete='current-password'
                     required
+                    onChange={handleChange}
                     className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
                   />
                 </div>
@@ -80,13 +107,10 @@ export default function SignupScreen() {
                 <div className='relative flex justify-center text-sm'></div>
               </div>
               <div className='flex items-center justify-center'>
-                <div className='text-sm'>
-                  <a
-                    href='/#'
-                    className='font-medium text-blue-600 hover:text-blue-500'
-                  >
+                <div className='text-sm' onClick={props.auth.handleShowLogin}>
+                  <span className='font-medium text-blue-600 hover:text-blue-500 cursor-pointer'>
                     Already have an account?
-                  </a>
+                  </span>
                 </div>
               </div>
             </form>
