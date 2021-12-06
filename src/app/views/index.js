@@ -5,6 +5,7 @@ import EntryWeeklyView from './EntryWeeklyView/EntryWeeklyView'
 import EntryEmptyStateView from './EntryEmptyStateView/EntryEmptyStateView'
 import EntryItemView from './EntryItemView/EntryItemView'
 import EntryItemHeaderView from './EntryItemHeaderView/EntryItemHeaderView'
+import ReportsEmptyStateView from './ReportsEmptyStateView/ReportsEmptyStateView'
 
 export {
   NotLoggedInView,
@@ -14,4 +15,5 @@ export {
   EntryEmptyStateView,
   EntryItemView,
   EntryItemHeaderView,
+  ReportsEmptyStateView,
 }
