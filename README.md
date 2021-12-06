@@ -1,4 +1,20 @@
-# Getting Started with Create React App
+# Team Tracker
+Time Tracker is a web application using ReactJS which allows users to track their progress on their respective projects.
+
+## Features
+
+* Manual time tracking entry without authentication
+* Users can track their progress for the week
+* Report summary of the total hours per project of the user
+* Simple login and registration of new users
+
+## Insallation
+1. Clone the repo `git clone https://github.com/raintes/time-tracker-web-app.git`
+2. Install NPM packages `npm install`
+3. Running the app `npm start`
+4. It should automatically open your default browser with http://localhost:3000/ as the url address.
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
