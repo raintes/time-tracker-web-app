@@ -118,10 +118,10 @@ export default function HomeScreen() {
                   return (
                     <>
                       <EntryWeeklyView data={keyData} />
-                      {/* Hackish way to add +5rem on h-screen's 100vh to show bottom items*/}
                     </>
                   )
                 })}
+                {/* Hackish way to add +5rem on h-screen's 100vh to show bottom items*/}
                 <div className='h-20'></div>
               </div>
             </>
