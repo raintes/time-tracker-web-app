@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import signup from '../../assets/images/signup.png'
 import close from '../../assets/icons/close.svg'
+import { localStorageKey } from 'app/utils/constants/constants'
+import { setClassNames } from 'app/utils/helpers/setClassNames'
 
 export default function SignupScreen(props) {
   const { auth } = props
@@ -10,16 +12,32 @@ export default function SignupScreen(props) {
     passwordConfirmation: '',
   })
 
+  const [isDisabled, setIsDisabled] = useState(true)
+
   const handleChange = event => {
     const value = event.target.value
     setFormInput({
       ...formInput,
       [event.target.name]: value,
     })
+
+    if (Object.values(formInput).every(val => val !== '')) {
+      setIsDisabled(false)
+    } else {
+      setIsDisabled(true)
+    }
   }
 
   const handleSubmit = event => {
     event.preventDefault()
+  }
+
+  const onHandleSignup = event => {
+    localStorage.setItem(
+      localStorageKey.TOKEN,
+      Math.random().toString(36).substr(2)
+    )
+    auth.handleHideSignup()
   }
 
   return (
@@ -104,8 +122,14 @@ export default function SignupScreen(props) {
               </div>
               <div>
                 <button
+                  disabled={isDisabled}
+                  onClick={onHandleSignup}
                   type='submit'
-                  className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                  className={setClassNames(
+                    !isDisabled
+                      ? 'w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                      : 'cursor-default w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-300  focus:outline-none '
+                  )}
                 >
                   Sign up
                 </button>

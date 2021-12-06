@@ -1,19 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 
-import { NavBarComponent, SideBarComponent } from 'app/components'
+import { Login, Signup } from '..'
 
-import {
-  NavBarAuthView,
-  NotLoggedInView,
-  EntryEmptyStateView,
-  TimerView,
-  EntryWeeklyView,
-} from 'app/views'
+import { NavBarComponent } from 'app/components'
+import { EntryEmptyStateView, TimerView, EntryWeeklyView } from 'app/views'
+import { weekEntries } from 'app/mock-data/entry.list'
 
 import { getWeekOfYear } from 'app/utils/helpers/dates'
+import { localStorageKey } from 'app/utils/constants/constants'
 import { getISOWeek, getIsThisWeek } from 'app/utils/helpers/dates'
-import { Login, Signup } from '..'
 
 // Handle Login and Signup screens to display as modal-like view
 const useAuthModals = () => {
@@ -65,9 +61,23 @@ const getWeekName = (week, year = 2021) => {
 }
 
 export default function HomeScreen() {
+  const token = localStorage.getItem(localStorageKey.TOKEN)
+
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [weeks, setWeeks] = useState({}) // use 'weekEntries' as initial state to use mock data
+  const [weeks, setWeeks] = useState({}) // use `weekEntries` as initial state to use mock data else `{}`
   const auth = useAuthModals()
+
+  useEffect(() => {
+    if (token) {
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false)
+    }
+  }, [token])
+
+  useEffect(() => {
+    localStorage.setItem(localStorageKey.ENTRIES, JSON.stringify(weeks))
+  }, [weeks])
 
   // Group time entries by week of the year
   const addWeekGroup = timeEntry => {
@@ -114,35 +124,34 @@ export default function HomeScreen() {
             <NavBarComponent
               justifyEnd={true}
               element={
-                isLoggedIn ? (
-                  <NavBarAuthView modal={auth} />
-                ) : (
-                  <TimerView addTimeEntry={addTimeEntry} modal={auth} />
-                )
+                <TimerView
+                  authenticated={isLoggedIn}
+                  addTimeEntry={addTimeEntry}
+                  modal={auth}
+                  removeAuth={setIsLoggedIn}
+                />
               }
             />
           </div>
-          {isLoggedIn ? (
-            <div className='content'>
-              <NotLoggedInView />
-            </div>
-          ) : Object.values(weeks).length ? (
+          {Object.values(weeks).length ? (
             <>
               <div className='overflow-y-scroll h-screen'>
-                {Object.entries(weeks).map(keyData => {
-                  const weekHeader = getWeekName(
-                    keyData[0], // Week of the year
-                    new Date(Object.keys(keyData[1])[0]).getFullYear() // Get sample data from keys (which uses date as key) to get year
-                  )
-                  return (
-                    <>
-                      <EntryWeeklyView
-                        weekHeader={weekHeader}
-                        data={keyData[1]}
-                      />
-                    </>
-                  )
-                })}
+                {Object.entries(weeks)
+                  .reverse()
+                  .map(keyData => {
+                    const weekHeader = getWeekName(
+                      keyData[0], // Week of the year
+                      new Date(Object.keys(keyData[1])[0]).getFullYear() // Get sample data from keys (which uses date as key) to get year
+                    )
+                    return (
+                      <>
+                        <EntryWeeklyView
+                          weekHeader={weekHeader}
+                          data={keyData[1]}
+                        />
+                      </>
+                    )
+                  })}
                 {/* Hackish way to add +5rem on h-screen's 100vh to show bottom items*/}
                 <div className='h-20'></div>
               </div>
