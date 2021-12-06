@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
+
 import { EntryItemHeaderView, EntryItemView } from '..'
+
 import {
   convertSecondsToHour,
   convertToSeconds,
 } from 'app/utils/helpers/duration'
 
 export default function EntryWeeklyView(props) {
-  const { data } = props
+  const { data, weekHeader } = props
 
   const getTotalWeekHours = () => {
     const weekHour = Object.values(data).map(entry => {
@@ -46,7 +48,7 @@ export default function EntryWeeklyView(props) {
       <div className='px-10 py-7'>
         <div className='week-header flex flex-row justify-between'>
           <div>
-            <span className='text-base'>This Week</span>
+            <span className='text-base'>{weekHeader}</span>
           </div>
           <div className='flex flex-row items-center'>
             <span className='text-base text-gray-500 mr-2'>Week total: </span>
