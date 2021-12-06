@@ -1,6 +1,7 @@
 import { localStorageKey } from 'app/utils/constants/constants'
 import React, { useState } from 'react'
 import login from '../../assets/images/login.png'
+import close from '../../assets/icons/close.svg'
 
 export default function LoginScreen(props) {
   const { auth } = props
@@ -30,6 +31,14 @@ export default function LoginScreen(props) {
       <div className='fixed z-10 inset-0 overflow-y-auto min-h-screen bg-gray-600 bg-opacity-75 flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
         <div className='items-center justify-center mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
           <div className='bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10'>
+            <div className='mb-10 flex justify-end'>
+              <img
+                onClick={auth.handleHideLogin}
+                className='object-cover md:object-scale-down max-h-7'
+                alt={close}
+                src={close}
+              />
+            </div>
             <img
               className='object-cover md:object-scale-down max-h-48 w-full mb-16'
               alt={login}
