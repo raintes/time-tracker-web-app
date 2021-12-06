@@ -1,12 +1,5 @@
+import { setClassNames } from 'app/utils/helpers/setClassNames'
 import React from 'react'
-
-/*
-Passes each item in the array to the Boolean object.
-Checks if the item is truthy, if it is then we keep.
-*/
-function setClassNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
 
 export default function SideBar(props) {
   const { navigation } = props
