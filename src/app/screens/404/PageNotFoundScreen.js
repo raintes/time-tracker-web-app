@@ -6,7 +6,7 @@ import { NAVIGATION } from 'app/utils/enums/enums'
 export default function PageNotFoundScreen() {
   return (
     <>
-      <div className='inset-0 overflow-y-auto min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
+      <div className='inset-0 overflow-y-auto min-h-screen w-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
         <div className='items-center justify-center mt-8 sm:mx-auto sm:w-full sm:max-w-2xl'>
           <div className='flex flex-col'>
             <img
