@@ -1,11 +1,17 @@
+// Convert time in H[:mm[:ss]] format to seconds
 export const convertToSeconds = duration => {
-  let seconds = duration.split(':')
-  // every hour and minute is 60 seconds
-  return +seconds[0] * 60 * 60 + +seconds[1] * 60 + +seconds[2]
+  let [h, m, s] = duration.split(':')
+  return h * 3600 + (m | 0) * 60 + (s | 0) * 1
 }
+// Convert seconds to time in H:mm:ss format
+export const convertSecondsToHour = seconds => {
+  let z = n => (n < 10 ? '0' : '') + n
 
-export const convertSecondsToHour = duration => {
-  const measuredTime = new Date(null)
-  measuredTime.setSeconds(duration)
-  return measuredTime.toISOString().substr(11, 8)
+  return (
+    ((seconds / 3600) | 0) +
+    ':' +
+    z(((seconds % 3600) / 60) | 0) +
+    ':' +
+    z(seconds % 60)
+  )
 }
