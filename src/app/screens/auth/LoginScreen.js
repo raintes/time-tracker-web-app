@@ -24,6 +24,7 @@ export default function LoginScreen(props) {
 
   const onHandleSignIn = event => {
     localStorage.setItem(localStorageKey.USER, JSON.stringify(formInput))
+    auth.handleHideLogin()
   }
 
   return (
