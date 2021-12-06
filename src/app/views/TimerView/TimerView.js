@@ -1,8 +1,10 @@
 import { projects } from 'app/mock-data/projects.list'
+import { localStorageKey } from 'app/utils/constants/constants'
+import { setClassNames } from 'app/utils/helpers/setClassNames'
 import React, { useState } from 'react'
 
 export default function TimerView(props) {
-  const { modal } = props
+  const { modal, authenticated, removeAuth } = props
 
   const [formInput, setFormInput] = useState({
     description: null,
@@ -29,6 +31,17 @@ export default function TimerView(props) {
     return projects.map(project => {
       return <option value={project.label}>{project.label}</option>
     })
+  }
+
+  const onHandleClick = event => {
+    if (!!authenticated) {
+      localStorage.removeItem(localStorageKey.TOKEN)
+      localStorage.removeItem(localStorageKey.ENTRIES)
+      localStorage.removeItem(localStorageKey.USER)
+      removeAuth(false)
+    } else if (event) {
+      modal.handleShowLogin()
+    }
   }
 
   return (
@@ -74,13 +87,15 @@ export default function TimerView(props) {
                 <span>ADD</span>
               </button>
               <button
-                onClick={modal.handleShowLogin}
+                onClick={onHandleClick}
                 type='button'
-                className={
-                  'ml-4 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-                }
+                className={setClassNames(
+                  authenticated === false
+                    ? 'ml-4 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                    : 'ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-400 hover:bg-red-500 focus:outline-none'
+                )}
               >
-                <span>Login</span>
+                <span>{authenticated ? 'Logout' : 'Login'}</span>
               </button>
             </div>
           </div>
