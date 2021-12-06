@@ -68,12 +68,12 @@ const getWeekName = (week, year = 2021) => {
 
 export default function HomeScreen() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [weeks, setWeeks] = useState(weekEntries) // use 'weekEntries' as initial state to use mock data
+  const [weeks, setWeeks] = useState({}) // use 'weekEntries' as initial state to use mock data
   const auth = useAuthModals()
 
   // Group time entries by week of the year
   const addWeekGroup = timeEntry => {
-    const weekNumber = getWeekOfYear(new Date(timeEntry.modifiedOn))
+    const weekNumber = getWeekOfYear(new Date(timeEntry.modifiedOn)) - 1
     const dateString = format(new Date(timeEntry.modifiedOn), 'MMMM dd yyyy')
 
     /**
