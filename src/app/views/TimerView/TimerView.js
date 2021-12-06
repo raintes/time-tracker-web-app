@@ -2,6 +2,8 @@ import { projects } from 'app/mock-data/projects.list'
 import React, { useState } from 'react'
 
 export default function TimerView(props) {
+  const { modal } = props
+
   const [formInput, setFormInput] = useState({
     description: null,
     project: null,
@@ -61,7 +63,7 @@ export default function TimerView(props) {
               placeholder='00:00:00'
               onChange={handleChange}
             />
-            <div className='ml-10'>
+            <div className='ml-10 flex'>
               <button
                 onClick={onAddTime}
                 type='button'
@@ -70,6 +72,15 @@ export default function TimerView(props) {
                 }
               >
                 <span>ADD</span>
+              </button>
+              <button
+                onClick={modal.handleShowLogin}
+                type='button'
+                className={
+                  'ml-4 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                }
+              >
+                <span>Login</span>
               </button>
             </div>
           </div>
