@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { NavBarComponent, SideBarComponent } from 'app/components'
 import { format } from 'date-fns'
+
+import { NavBarComponent, SideBarComponent } from 'app/components'
 
 import {
   NavBarAuthView,
@@ -10,10 +11,11 @@ import {
   EntryWeeklyView,
 } from 'app/views'
 
-import { navigation } from 'app/utils/constants/constants'
-import { Login, Signup } from '..'
 import { getWeekOfYear } from 'app/utils/helpers/dates'
+import { getISOWeek, getIsThisWeek } from 'app/utils/helpers/dates'
+import { navigation } from 'app/utils/constants/constants'
 import { weekEntries } from 'app/mock-data/entry.list'
+import { Login, Signup } from '..'
 
 // Handle Login and Signup screens to display as modal-like view
 const useAuthModals = () => {
@@ -48,9 +50,25 @@ const useAuthModals = () => {
   }
 }
 
+const getWeekName = (week, year = 2021) => {
+  const weeks = getISOWeek(week, year)
+  const firstDayOfWeek = weeks[0]
+  const lastDayOfWeek = weeks[weeks.length - 1]
+
+  if (getIsThisWeek(firstDayOfWeek)) {
+    return 'This week'
+  } else {
+    return (
+      format(new Date(firstDayOfWeek), 'MMM dd') +
+      ' - ' +
+      format(new Date(lastDayOfWeek), 'MMM dd')
+    )
+  }
+}
+
 export default function HomeScreen() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [weeks, setWeeks] = useState(weekEntries) // add 'weekEntries' as initial state to use mock data
+  const [weeks, setWeeks] = useState(weekEntries) // use 'weekEntries' as initial state to use mock data
   const auth = useAuthModals()
 
   // Group time entries by week of the year
@@ -58,11 +76,13 @@ export default function HomeScreen() {
     const weekNumber = getWeekOfYear(new Date(timeEntry.modifiedOn))
     const dateString = format(new Date(timeEntry.modifiedOn), 'MMMM dd yyyy')
 
-    // Checks if `weekNumber` is existing on the object along with
-    // the `dateString` that is used as a key for the list of entries
-    // The expected output of `weeks` is an array of
-    // `n: { 'yyyy-mm-dd' : [array of entries]} `
-    // where n is the week number of the year.
+    /**
+    Checks if `weekNumber` is existing on the object along with
+    the `dateString` that is used as a key for the list of entries.
+    The expected output of `weeks` is an array of
+    `n: { 'yyyy-mm-dd' : [array of entries]} `
+    where n is the week number of the year.
+    **/
     if (weeks[weekNumber] && weeks[weekNumber][dateString]) {
       setWeeks({
         ...weeks,
@@ -114,10 +134,17 @@ export default function HomeScreen() {
           ) : Object.values(weeks).length ? (
             <>
               <div className='overflow-y-scroll h-screen'>
-                {Object.values(weeks).map(keyData => {
+                {Object.entries(weeks).map(keyData => {
+                  const weekHeader = getWeekName(
+                    keyData[0], // Week of the year
+                    new Date(Object.keys(keyData[1])[0]).getFullYear() // Get sample data from keys (which uses date as key) to get year
+                  )
                   return (
                     <>
-                      <EntryWeeklyView data={keyData} />
+                      <EntryWeeklyView
+                        weekHeader={weekHeader}
+                        data={keyData[1]}
+                      />
                     </>
                   )
                 })}
