@@ -23,7 +23,6 @@ export default function EnterItemHeaderView(props) {
         <div className='flex flex-row items-center'>
           <span className='text-base text-gray-500 mr-2'>Total: </span>
           <span className='sm:text-lg font-semibold flex'>
-            {' '}
             {getTotalDayHours()}
           </span>
         </div>
