@@ -13,8 +13,6 @@ import {
 
 import { getWeekOfYear } from 'app/utils/helpers/dates'
 import { getISOWeek, getIsThisWeek } from 'app/utils/helpers/dates'
-import { navigation } from 'app/utils/constants/constants'
-import { weekEntries } from 'app/mock-data/entry.list'
 import { Login, Signup } from '..'
 
 // Handle Login and Signup screens to display as modal-like view
@@ -36,7 +34,7 @@ const useAuthModals = () => {
     setShowSignup(true)
   }
 
-  const handlehideSignup = () => {
+  const handleHideSignup = () => {
     setShowSignup(false)
   }
 
@@ -46,7 +44,7 @@ const useAuthModals = () => {
     handleShowLogin,
     handleHideLogin,
     handleShowSignup,
-    handlehideSignup,
+    handleHideSignup,
   }
 }
 
@@ -111,9 +109,6 @@ export default function HomeScreen() {
       {auth.showSignup && <Signup auth={auth} />}
 
       <div className='flex flex-row overflow-hidden'>
-        <div className='sidebar flex overflow-hidden'>
-          <SideBarComponent {...{ navigation }} />
-        </div>
         <div className='home-container h-screen bg-gray-50 min-w-0'>
           <div className='header'>
             <NavBarComponent
@@ -122,7 +117,7 @@ export default function HomeScreen() {
                 isLoggedIn ? (
                   <NavBarAuthView modal={auth} />
                 ) : (
-                  <TimerView addTimeEntry={addTimeEntry} />
+                  <TimerView addTimeEntry={addTimeEntry} modal={auth} />
                 )
               }
             />
