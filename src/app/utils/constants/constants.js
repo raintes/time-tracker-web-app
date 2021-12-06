@@ -7,5 +7,7 @@ export const navigation = [
 
 export const localStorageKey = {
   USER: 'user',
+  TOKEN: 'token',
+  ENTRIES: 'entries',
 }
 Object.freeze(NAVIGATION)
