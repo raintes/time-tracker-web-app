@@ -1,6 +1,6 @@
 export const weekEntries = {
   49: {
-    'November 28 2021': [
+    'December 12 2021': [
       {
         description: 'Create screens',
         hours: '5:21:20',
@@ -26,7 +26,7 @@ export const weekEntries = {
         project: 'Project 2',
       },
     ],
-    'November 29 2021': [
+    'December 11 2021': [
       {
         description: 'Create screens',
         hours: '5:21:20',
@@ -52,7 +52,7 @@ export const weekEntries = {
         project: 'Project 2',
       },
     ],
-    'November 30 2021': [
+    'December 10 2021': [
       {
         description: 'Create screens',
         hours: '5:21:20',
@@ -78,7 +78,7 @@ export const weekEntries = {
         project: 'Project 2',
       },
     ],
-    'December 1 2021': [
+    'December 06 2021': [
       {
         description: 'Create screens',
         hours: '5:21:20',
