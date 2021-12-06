@@ -1,4 +1,3 @@
-import { setClassNames } from 'app/utils/helpers/setClassNames'
 import React from 'react'
 
 export default function SideBar(props) {
@@ -14,12 +13,7 @@ export default function SideBar(props) {
             <a
               key={item.name}
               href={item.href}
-              className={setClassNames(
-                item.current
-                  ? 'bg-gray-600 border-blue-600 text-white'
-                  : 'border-transparent text-white hover:bg-gray-900 ',
-                'group flex items-center px-3 py-2 text-sm font-medium border-l-4'
-              )}
+              className='border-transparent text-white hover:bg-gray-900 flex items-center px-3 py-2 text-sm font-medium border-l-4'
             >
               {item.name}
             </a>
