@@ -25,7 +25,7 @@ export default function EntryWeeklyView(props) {
       return (
         <>
           <div className='mt-4 border'>
-            <EntryItemHeaderView date={entry[0]} />
+            <EntryItemHeaderView date={entry[0]} entries={entry[1]} />
             {entry[1].map(timeEntries => {
               return (
                 <>
