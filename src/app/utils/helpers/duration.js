@@ -24,7 +24,5 @@ export const convertSecondsToHour = duration => {
     ss = '0' + ss
   }
 
-  console.log(ss.length)
-
   return hh + ':' + mm + ':' + ss
 }
